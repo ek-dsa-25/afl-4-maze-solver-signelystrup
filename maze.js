@@ -21,7 +21,7 @@ class Cell {
     // Hjælpefunktion til generate(): Tegn cellen
     draw(ctx, cellWidth) {
         ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 4;
+        ctx.lineWidth = 2;
         ctx.beginPath();
 
         const px = this.x * cellWidth;
@@ -172,7 +172,7 @@ class Cell {
     }
 
     // Hjælpefunktion til MazeSolver: Fremhæver cellen som en del af stien
-    drawPath(ctx, cellWidth, color = '#ff0000') {
+    drawPath(ctx, cellWidth, isMouse) {
         /*
         // TODO: Personliggør denne funktion.
         ctx.fillStyle = color;
@@ -185,9 +185,16 @@ class Cell {
         const py = this.y * cellWidth;
 
         const image = new Image;
-        image.src = this.image === "none" ? "images/step.png" : "images/" + this.image + ".png";
-        
-        ctx.drawImage(image, px, py, cellWidth, cellWidth);
+        if (isMouse){
+            image.src = "images/mouse.png";
+        }else{
+            image.src = this.image === "none" ? "images/step.png" : "images/" + this.image + ".png";
+        }
+
+        ctx.fillStyle = "white";
+        ctx.fillRect(px,py, cellWidth-4, cellWidth-4); //?? can't get the fill to look nice.
+
+        ctx.drawImage(image, px, py, cellWidth-4, cellWidth-4);
 
     }
 }
@@ -304,6 +311,7 @@ class MazeSolver {
 
             if (connectedNeighbors.length < 1){
                 currentCell.image = "backtrack";
+                console.log("backtrack...");
             }
 
             console.log(currentCell.image);
@@ -330,15 +338,22 @@ class MazeSolver {
         if (!path) return;
 
         for (const cell of path) {
-            cell.drawPath(this.maze.ctx, this.maze.cellWidth, color);
+            cell.drawPath(this.maze.ctx, this.maze.cellWidth, false);
         }
     }
 
     async drawPathStepwise(path, color = '#ff0000', delay = 100) {
         if (!path) return;
 
+        let prevCell = null;
         for (const cell of path) {
-            cell.drawPath(this.maze.ctx, this.maze.cellWidth, color);
+            if (prevCell != null){
+                prevCell.drawPath(this.maze.ctx, this.maze.cellWidth, false);
+            }
+            cell.drawPath(this.maze.ctx, this.maze.cellWidth, true);
+
+            prevCell = cell;
+
             await this.sleep(delay);
         }
     }
@@ -364,7 +379,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const endY = maze.rows - 1;
 
     const path = solver.findPath(startX, startY, endX, endY);
-    solver.drawPathStepwise(path, '#ff0000', 20);
+    console.log("path, ", path);
+    solver.drawPathStepwise(path, '#ff0000', 100);
 
     console.log(maze);
 })
