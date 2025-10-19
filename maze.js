@@ -130,11 +130,36 @@ class Cell {
     connectedNeighbors(grid) {
         let neighbors = [];
 
-        // TODO: Tjek om naboen nord for, hvis den findes, har en væg
-        // TODO: Tjek om naboen til venstre, hvis den findes, har en væg
-        // TODO: Tjek om naboen syd for, hvis den findes, har en væg
-        // TODO: Tjek om naboen til højre, hvis den findes, har en væg
+        // Tjek om naboen nord for, hvis den findes, har en væg
+        if (this.y > 0 && !this.top){
+            const nord_x = this.x;
+            const nord_y = this.y - 1;
+            const nord_nabo = grid[nord_x][nord_y];
+            neighbors.push(nord_nabo)
+        }
 
+        // Tjek om naboen til venstre, hvis den findes, har en væg
+        if (this.x > 0 && !this.left){
+            const left_x = this.x - 1;
+            const left_y = this.y ;
+            const left_nabo = grid[left_x][left_y];
+            neighbors.push(left_nabo)
+        }
+
+        // Tjek om naboen syd for, hvis den findes, har en væg
+        if (this.y < grid[0].length - 1 && !this.bottom){
+            const south_x = this.x;
+            const south_y = this.y + 1;
+            const south_neighbor = grid[south_x][south_y];
+            neighbors.push(south_neighbor)
+        }
+        // Tjek om naboen til højre, hvis den findes, har en væg
+        if (this.x < grid.length - 1 && !this.right){
+            const right_x = this.x + 1;
+            const right_y = this.y;
+            const right_nabo = grid[right_x][right_y];
+            neighbors.push(right_nabo)
+        }
         return neighbors;
     }
 
@@ -189,7 +214,7 @@ class Maze {
         let stack = [];
 
         currentCell.visited = true;
-
+        console.log("connected neighbors: ", currentCell.connectedNeighbors(this.grid) );
         // Get unvisited neighbors
         // If there are unvisited neighbors:
         // - pick a random one of them
