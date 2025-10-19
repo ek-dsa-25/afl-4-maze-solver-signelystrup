@@ -340,15 +340,15 @@ class MazeSolver {
 
         let prevCell = null;
 
-        path[0].drawPath(this.maze.ctx, this.maze.cellWidth, false);
+        path[0].drawPath(this.maze.ctx, this.maze.cellWidth, false); //draw start
 
         for (const cell of path) {
-            path[path.length -1].drawPath(this.maze.ctx, this.maze.cellWidth, false);
+            path[path.length -1].drawPath(this.maze.ctx, this.maze.cellWidth, false); //draw cheese/end
 
             if (prevCell != null){
-                prevCell.drawPath(this.maze.ctx, this.maze.cellWidth, false);
+                prevCell.drawPath(this.maze.ctx, this.maze.cellWidth, false); //draw normal cell image
             }
-            cell.drawPath(this.maze.ctx, this.maze.cellWidth, true);
+            cell.drawPath(this.maze.ctx, this.maze.cellWidth, true); //draw mouse
 
             prevCell = cell;
 
@@ -377,8 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const endY = maze.rows - 1;
 
     const path = solver.findPath(startX, startY, endX, endY);
-    console.log("path, ", path);
-    solver.drawPathStepwise(path, '#ff0000', 100);
+    solver.drawPathStepwise(path, '#ff0000', 80);
 
     console.log(maze);
 })
