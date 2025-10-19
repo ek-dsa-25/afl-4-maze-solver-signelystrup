@@ -286,12 +286,10 @@ class MazeSolver {
         
         let path = [];
         let stack = [];
-        let visited = [];
         stack.push(startCell);
 
         while(stack.length > 0){
             const currentCell = stack.pop();
-            visited.push(currentCell);
             path.push(currentCell);
 
             //console.log("current cell: ", currentCell);
@@ -303,7 +301,7 @@ class MazeSolver {
             //add neighbors to stack:
             const connectedNeighbors = currentCell.connectedNeighbors(this.maze.grid);
             for (let i = 0; i < connectedNeighbors.length; i++){
-                if( !visited.includes(connectedNeighbors[i]) ){
+                if( !path.includes(connectedNeighbors[i]) ){
                     stack.push(connectedNeighbors[i]);
                 }
             }//end of for loop
