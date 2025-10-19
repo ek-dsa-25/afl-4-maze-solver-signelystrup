@@ -305,18 +305,12 @@ class MazeSolver {
             for (let i = 0; i < connectedNeighbors.length; i++){
                 if( !visited.includes(connectedNeighbors[i]) ){
                     stack.push(connectedNeighbors[i]);
-                }else{
-                    
                 }
             }//end of for loop
 
             if (connectedNeighbors.length <= 1){
                 currentCell.image = "backtrack";
-                console.log("backtrack...");
             }
-
-            console.log(currentCell.image);
-
 
         }//end of while
 
@@ -351,6 +345,7 @@ class MazeSolver {
         path[0].drawPath(this.maze.ctx, this.maze.cellWidth, false);
 
         for (const cell of path) {
+            path[path.length -1].drawPath(this.maze.ctx, this.maze.cellWidth, false);
 
             if (prevCell != null){
                 prevCell.drawPath(this.maze.ctx, this.maze.cellWidth, false);
@@ -358,7 +353,6 @@ class MazeSolver {
             cell.drawPath(this.maze.ctx, this.maze.cellWidth, true);
 
             prevCell = cell;
-        path[path.length -1].drawPath(this.maze.ctx, this.maze.cellWidth, false);
 
             await this.sleep(delay);
         }
