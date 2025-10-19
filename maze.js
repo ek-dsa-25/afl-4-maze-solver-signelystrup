@@ -348,6 +348,8 @@ class MazeSolver {
 
         let prevCell = null;
 
+        path[0].drawPath(this.maze.ctx, this.maze.cellWidth, false);
+
         for (const cell of path) {
 
             if (prevCell != null){
@@ -356,9 +358,7 @@ class MazeSolver {
             cell.drawPath(this.maze.ctx, this.maze.cellWidth, true);
 
             prevCell = cell;
-
-path[0].drawPath(this.maze.ctx, this.maze.cellWidth, true);
-            path[path.length -1].drawPath(this.maze.ctx, this.maze.cellWidth, true);
+        path[path.length -1].drawPath(this.maze.ctx, this.maze.cellWidth, false);
 
             await this.sleep(delay);
         }
