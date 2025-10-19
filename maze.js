@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const endX = maze.cols - 1;
     const endY = maze.rows - 1;
 
-    solver.findPath(startX, startY, endX, endY);
+    const path = solver.findPath(startX, startY, endX, endY);
     solver.drawPathStepwise(path, '#ff0000', 20);
 
     console.log(maze);
