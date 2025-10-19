@@ -15,6 +15,7 @@ class Cell {
             left: true,
         };
         this.visited = false;
+        this.image = "none";
     }
 
     // Hjælpefunktion til generate(): Tegn cellen
@@ -172,12 +173,22 @@ class Cell {
 
     // Hjælpefunktion til MazeSolver: Fremhæver cellen som en del af stien
     drawPath(ctx, cellWidth, color = '#ff0000') {
+        /*
         // TODO: Personliggør denne funktion.
         ctx.fillStyle = color;
         const px = this.x * cellWidth + cellWidth * 0.25;
         const py = this.y * cellWidth + cellWidth * 0.25;
         const size = cellWidth * 0.5;
-        ctx.fillRect(px, py, size, size);
+        ctx.fillRect(px, py, size, size);*/
+
+        const px = this.x * cellWidth;
+        const py = this.y * cellWidth;
+
+        const image = new Image;
+        image.src = this.image === "none" ? "images/step.png" : "images/" + this.image + ".png";
+        
+        ctx.drawImage(image, px, py, cellWidth, cellWidth);
+
     }
 }
 
@@ -262,6 +273,9 @@ class MazeSolver {
         const startCell = this.maze.grid[startX][startY];
         const endCell = this.maze.grid[endX][endY];
 
+        startCell.image = "start";
+        endCell.image = "cheese";
+
         // TODO: Lav `findPath()` vha. enten DFS (stak) eller BFS (queue)
         
         let path = [];
@@ -274,10 +288,9 @@ class MazeSolver {
             visited.push(currentCell);
             path.push(currentCell);
 
-            console.log("current cell: ", currentCell);
+            //console.log("current cell: ", currentCell);
 
             if (currentCell === endCell){
-                //something
                 return path;
             }
             
@@ -288,6 +301,13 @@ class MazeSolver {
                     stack.push(connectedNeighbors[i]);
                 }
             }//end of for loop
+
+            if (connectedNeighbors.length < 1){
+                currentCell.image = "backtrack";
+            }
+
+            console.log(currentCell.image);
+
 
         }//end of while
 
