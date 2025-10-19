@@ -180,7 +180,7 @@ class Cell {
         const py = this.y * cellWidth + cellWidth * 0.25;
         const size = cellWidth * 0.5;
         ctx.fillRect(px, py, size, size);*/
-
+        
         const px = this.x * cellWidth;
         const py = this.y * cellWidth;
 
@@ -192,10 +192,9 @@ class Cell {
         }
 
         ctx.fillStyle = "white";
-        ctx.fillRect(px,py, cellWidth-4, cellWidth-4); //?? can't get the fill to look nice.
+        ctx.fillRect(px +2,py +2, cellWidth-2, cellWidth-2); //clear previous image.
 
-        ctx.drawImage(image, px, py, cellWidth-4, cellWidth-4);
-
+        ctx.drawImage(image, px +4, py +4, cellWidth-4, cellWidth-4); 
     }
 }
 
@@ -306,10 +305,12 @@ class MazeSolver {
             for (let i = 0; i < connectedNeighbors.length; i++){
                 if( !visited.includes(connectedNeighbors[i]) ){
                     stack.push(connectedNeighbors[i]);
+                }else{
+                    
                 }
             }//end of for loop
 
-            if (connectedNeighbors.length < 1){
+            if (connectedNeighbors.length <= 1){
                 currentCell.image = "backtrack";
                 console.log("backtrack...");
             }
@@ -346,13 +347,18 @@ class MazeSolver {
         if (!path) return;
 
         let prevCell = null;
+
         for (const cell of path) {
+
             if (prevCell != null){
                 prevCell.drawPath(this.maze.ctx, this.maze.cellWidth, false);
             }
             cell.drawPath(this.maze.ctx, this.maze.cellWidth, true);
 
             prevCell = cell;
+
+path[0].drawPath(this.maze.ctx, this.maze.cellWidth, true);
+            path[path.length -1].drawPath(this.maze.ctx, this.maze.cellWidth, true);
 
             await this.sleep(delay);
         }
