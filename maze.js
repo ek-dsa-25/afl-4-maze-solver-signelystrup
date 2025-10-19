@@ -130,8 +130,9 @@ class Cell {
     connectedNeighbors(grid) {
         let neighbors = [];
 
+        
         // Tjek om naboen nord for, hvis den findes, har en væg
-        if (this.y > 0 && !this.top){
+        if (this.y > 0 && !this.walls.top){
             const nord_x = this.x;
             const nord_y = this.y - 1;
             const nord_nabo = grid[nord_x][nord_y];
@@ -139,7 +140,7 @@ class Cell {
         }
 
         // Tjek om naboen til venstre, hvis den findes, har en væg
-        if (this.x > 0 && !this.left){
+        if (this.x > 0 && !this.walls.left){
             const left_x = this.x - 1;
             const left_y = this.y ;
             const left_nabo = grid[left_x][left_y];
@@ -147,19 +148,20 @@ class Cell {
         }
 
         // Tjek om naboen syd for, hvis den findes, har en væg
-        if (this.y < grid[0].length - 1 && !this.bottom){
+        if (this.y < grid[0].length - 1 && !this.walls.bottom){
             const south_x = this.x;
             const south_y = this.y + 1;
             const south_neighbor = grid[south_x][south_y];
             neighbors.push(south_neighbor)
         }
         // Tjek om naboen til højre, hvis den findes, har en væg
-        if (this.x < grid.length - 1 && !this.right){
+        if (this.x < grid.length - 1 && !this.walls.right){
             const right_x = this.x + 1;
             const right_y = this.y;
             const right_nabo = grid[right_x][right_y];
             neighbors.push(right_nabo)
         }
+
         return neighbors;
     }
 
@@ -261,6 +263,33 @@ class MazeSolver {
         const endCell = this.maze.grid[endX][endY];
 
         // TODO: Lav `findPath()` vha. enten DFS (stak) eller BFS (queue)
+        
+        let path = [];
+        let stack = [];
+        let visited = [];
+        stack.push(startCell);
+
+        while(stack.length > 0){
+            const currentCell = stack.pop();
+            visited.push(currentCell);
+            path.push(currentCell);
+
+            console.log("current cell: ", currentCell);
+
+            if (currentCell === endCell){
+                //something
+                return path;
+            }
+            
+            //add neighbors to stack:
+            const connectedNeighbors = currentCell.connectedNeighbors(this.maze.grid);
+            for (let i = 0; i < connectedNeighbors.length; i++){
+                if( !visited.includes(connectedNeighbors[i]) ){
+                    stack.push(connectedNeighbors[i]);
+                }
+            }//end of for loop
+
+        }//end of while
 
         return null;
     }
